@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.ebrightmoon.qrcode.zxingdemo.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -30,12 +30,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".TestScanActivity" />
+        <activity android:name="com.ebrightmoon.qrcode.zxingdemo.TestScanActivity" />
 
-        <activity android:name=".CaptureActivity"/>
+        <activity android:name="com.ebrightmoon.qrcode.zxingdemo.CaptureActivity"/>
 
         <activity
-            android:name=".TestGeneratectivity"
+            android:name="com.ebrightmoon.qrcode.zxingdemo.TestGeneratectivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 

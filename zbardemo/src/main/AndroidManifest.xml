@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.ebrightmoon.qrcode.zbardemo.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".TestScanActivity" />
+        <activity android:name="com.ebrightmoon.qrcode.zbardemo.TestScanActivity" />
     </application>
 
 </manifest>
