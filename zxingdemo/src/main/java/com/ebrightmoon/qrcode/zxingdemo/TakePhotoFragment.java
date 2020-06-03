@@ -3,6 +3,7 @@ package com.ebrightmoon.qrcode.zxingdemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.ebrightmoon.qrcode.core.CameraPreview;
+import com.ebrightmoon.qrcode.core.CameraView;
 
 import cn.bingoogolapple.qrcode.zxingdemo.R;
 
@@ -27,7 +29,7 @@ import cn.bingoogolapple.qrcode.zxingdemo.R;
  */
 public class TakePhotoFragment extends Fragment {
 
-    private CameraPreview cameraPreview;
+    private CameraView cameraPreview;
     private View view;
     private CheckBox mCbFlash;
     private ImageView mIvPhoto;
@@ -56,7 +58,12 @@ public class TakePhotoFragment extends Fragment {
         mIvTake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cameraPreview.takePicture();
+                cameraPreview.takePicture(new Camera.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+
+                    }
+                });
             }
         });
 
@@ -113,7 +120,7 @@ public class TakePhotoFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        cameraPreview.stopCamera();
+        cameraPreview.onDestroy();
 
     }
 }

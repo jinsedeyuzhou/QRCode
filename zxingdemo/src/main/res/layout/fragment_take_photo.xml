@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.ebrightmoon.qrcode.core.CameraPreview
+    <com.ebrightmoon.qrcode.core.CameraView
         android:id="@+id/cameraPreview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

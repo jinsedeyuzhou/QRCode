@@ -1,7 +1,7 @@
 package com.ebrightmoon.qrcode.zxingdemo;
 
 /**
- * 作者:王浩
+ *
  * 创建时间:2018/6/19
  * 描述:
  */

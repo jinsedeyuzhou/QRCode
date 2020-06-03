@@ -12,6 +12,17 @@ import android.view.SurfaceView;
 
 import java.util.Collections;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.hardware.Camera;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
+import java.util.Collections;
+
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private Camera mCamera;
     private boolean mPreviewing = false;
@@ -20,16 +31,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private float mOldDist = 1f;
     private CameraConfigurationManager mCameraConfigurationManager;
     private Delegate mDelegate;
-    protected int mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
-    private static final int NO_CAMERA_ID = -1;
 
     public CameraPreview(Context context) {
         super(context);
-        getHolder().addCallback(this);
-    }
-
-    public CameraPreview(Context context, AttributeSet attrs) {
-        super(context, attrs);
         getHolder().addCallback(this);
     }
 
@@ -46,7 +50,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         }
     }
-
 
     void setDelegate(Delegate delegate) {
         mDelegate = delegate;
@@ -76,6 +79,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (getHolder() == null || getHolder().getSurface() == null) {
             return;
         }
+
         stopCameraPreview();
         showCameraPreview();
     }
@@ -100,88 +104,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    public void takePicture() {
-        showCameraPreview();
-        mCamera.takePicture(null, null, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-
-            }
-        });
-    }
-
-    /**
-     * 打开后置摄像头开始预览，但是并未开始识别
-     */
-    public void startCamera() {
-        startCamera(mCameraId);
-    }
-
-    /**
-     * 打开指定摄像头开始预览，但是并未开始识别
-     */
-    public void startCamera(int cameraFacing) {
-        if (mCamera != null || Camera.getNumberOfCameras() == 0) {
-            return;
-        }
-        int ultimateCameraId = findCameraIdByFacing(cameraFacing);
-        if (ultimateCameraId != NO_CAMERA_ID) {
-            startCameraById(ultimateCameraId);
-            return;
-        }
-
-        if (cameraFacing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-            ultimateCameraId = findCameraIdByFacing(Camera.CameraInfo.CAMERA_FACING_FRONT);
-        } else if (cameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            ultimateCameraId = findCameraIdByFacing(Camera.CameraInfo.CAMERA_FACING_BACK);
-        }
-        if (ultimateCameraId != NO_CAMERA_ID) {
-            startCameraById(ultimateCameraId);
-        }
-    }
-
-    private int findCameraIdByFacing(int cameraFacing) {
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        for (int cameraId = 0; cameraId < Camera.getNumberOfCameras(); cameraId++) {
-            try {
-                Camera.getCameraInfo(cameraId, cameraInfo);
-                if (cameraInfo.facing == cameraFacing) {
-                    return cameraId;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return NO_CAMERA_ID;
-    }
-    /**
-     * 关闭摄像头预览，并且隐藏扫描框
-     */
-    public void stopCamera() {
-        try {
-            if (mCamera != null) {
-                stopCameraPreview();
-                setCamera(null);
-                mCamera.release();
-                mCamera = null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    private void startCameraById(int cameraId) {
-        try {
-            mCameraId = cameraId;
-            mCamera = Camera.open(cameraId);
-            setCamera(mCamera);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     void stopCameraPreview() {
         if (mCamera != null) {
             try {
@@ -195,13 +117,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    public void openFlashlight() {
+    void openFlashlight() {
         if (flashLightAvailable()) {
             mCameraConfigurationManager.openFlashlight(mCamera);
         }
     }
 
-    public void closeFlashlight() {
+    void closeFlashlight() {
         if (flashLightAvailable()) {
             mCameraConfigurationManager.closeFlashlight(mCamera);
         }
